@@ -9,6 +9,10 @@ const UploadArea = ({ onFileUpload, dragOver, onDragOver, onDragLeave, onDrop })
 
   const handleFileChange = (e) => {
     onFileUpload(e.target.files);
+    // Reset input to allow re-uploading the same files without manual clearing
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   return (

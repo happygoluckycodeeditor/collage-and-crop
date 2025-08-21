@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Header from './components/Header';
 import TabNavigation from './components/TabNavigation';
-import CropperModal from './components/CropperModal';
 import UploadTab from './tabs/UploadTab';
 import CropTab from './tabs/CropTab';
 import CollageTab from './tabs/CollageTab';
@@ -11,7 +10,6 @@ import './App.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('upload');
-  const [croppingIndex, setCroppingIndex] = useState(null);
   
   const {
     images,
@@ -29,21 +27,6 @@ function App() {
     if (hasNewImages) {
       setActiveTab('crop');
     }
-  };
-
-  const handleCropImage = (index) => {
-    setCroppingIndex(index);
-  };
-
-  const handleSaveCrop = async (croppedAreaPixels) => {
-    if (croppingIndex !== null) {
-      await updateImageCrop(croppingIndex, croppedAreaPixels);
-      setCroppingIndex(null);
-    }
-  };
-
-  const handleCloseCropper = () => {
-    setCroppingIndex(null);
   };
 
   const handleExport = () => {
@@ -70,11 +53,7 @@ function App() {
         );
       case 'crop':
         return (
-          <CropTab
-            images={images}
-            onCropImage={handleCropImage}
-            onRemoveImage={removeImage}
-          />
+          <CropTab />
         );
       case 'collage':
         return (
@@ -100,12 +79,7 @@ function App() {
 
       {renderTabContent()}
 
-      <CropperModal
-        isOpen={croppingIndex !== null}
-        imageSrc={croppingIndex !== null ? images[croppingIndex]?.src : null}
-        onClose={handleCloseCropper}
-        onSave={handleSaveCrop}
-      />
+      {/* Cropper modal is now fully managed inside CropTab */}
     </div>
   );
 }
